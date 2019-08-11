@@ -12,27 +12,27 @@
     align-content: center;
 }
 
-img {
+.images img {
     height: 200px;
     margin: 10px 5px;
 }
 
 @media (max-width: 655px) {
-    img {
+    .images img {
         max-width: 495px;
         height: auto;
     }
 }
 
 @media (max-width: 510px) {
-    img {
+    .images img {
         max-width: 400px;
         height: auto;
     }
 }
 
 @media (max-width: 400px) {
-    img {
+    .images img {
         max-width: 270px;
         height: auto;
     }
