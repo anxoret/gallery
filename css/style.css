@@ -13,25 +13,27 @@
 }
 
 img {
-    width: 300px;
-    margin: 10px 0;
+    height: 200px;
+    margin: 10px 5px;
 }
 
 @media (max-width: 655px) {
     img {
-        width: 500px;
+        max-width: 495px;
+        height: auto;
     }
 }
 
 @media (max-width: 510px) {
     img {
-        width: 400px;
+        max-width: 400px;
+        height: auto;
     }
 }
 
 @media (max-width: 400px) {
     img {
-        width: 320px;
+        max-width: 270px;
+        height: auto;
     }
 }
-
