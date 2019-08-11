@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Gallery</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    
+    <div class="container">
+
+        <form class="form-download" enctype="multipart/form-data" method="post" action="">
+            <p><input class="form-download__input-url" type="text" size="30px" value="Введите url до картинки"> 
+                или <input class="form-download__input-jsonFile" type="file" name="json" onchange="readFile(this)"></p>
+            <p><input class="form-download__input-submit" type="button" value="Загрузить" onclick="downloadImage(this)"></p>
+        </form>
+
+        <div class="images">
+            
+        </div>
+
+    </div>
+
+    <script src="es5/collection.js"></script>
+</body>
+</html>
