@@ -20,6 +20,7 @@ var Collection = function () {
     _createClass(Collection, [{
         key: "add",
         value: function add(elem) {
+
             var storage = this.toArray();
             storage.push(elem);
         }
@@ -47,7 +48,7 @@ var ImageCollection = function (_Collection) {
     _createClass(ImageCollection, [{
         key: "add",
         value: function add(elem) {
-            if (elem instanceof ImageLink) {
+            if (elem instanceof ImageWithLink) {
                 _get(ImageCollection.prototype.__proto__ || Object.getPrototypeOf(ImageCollection.prototype), "add", this).call(this, elem);
             }
         }
@@ -58,34 +59,45 @@ var ImageCollection = function (_Collection) {
 
 ;
 
-var ImageLink = function () {
-    function ImageLink(url) {
-        _classCallCheck(this, ImageLink);
+var ImageWithLink = function () {
+    function ImageWithLink(url, collection) {
+        _classCallCheck(this, ImageWithLink);
 
-        this._link = url;
+        this._image = new Image();
+        this._image.onload = function () {
+            setTimeout(function () {
+                return refreshView();
+            }, 0);
+        };
+        this._image.src = url;
     }
 
-    _createClass(ImageLink, [{
+    _createClass(ImageWithLink, [{
+        key: "image",
+        get: function get() {
+            return this._image;
+        }
+    }, {
         key: "link",
         get: function get() {
-            return this._link;
+            return this._image.src;
         },
         set: function set(url) {
-            this._link = url;
+            this._image.src = url;
         }
     }]);
 
-    return ImageLink;
+    return ImageWithLink;
 }();
 
 ;
 
-function createImageFromLink(url) {
-    return new ImageLink(url);
+function createImageFromLink(url, collection) {
+    return new ImageWithLink(url, collection);
 };
 
 function addImageToCollection(url, collection) {
-    collection.add(createImageFromLink(url));
+    collection.add(createImageFromLink(url, collection));
 };
 
 function addImage(url, collection) {
@@ -132,16 +144,41 @@ function readFile(input) {
 
 var imagesHtmlContainer = document.querySelector(".images");
 
+function refreshView() {
+
+    var images = document.querySelectorAll(".images__img");
+
+    var imagesMaxHeight = 200;
+    var imagesMaxWidth = 0;
+
+    for (var i = 0; i < images.length; i++) {
+
+        if (imagesMaxHeight < images[i].height) {
+            images[i].style.height = "200px";
+        }
+
+        if (imagesMaxWidth < images[i].width) {
+            imagesMaxWidth = images[i].width;
+        }
+    }
+}
+
 function updateView(collection) {
     var imageToAdd = collection.toArray()[collection.toArray().length - 1];
     var newImage = document.createElement("img");
+    newImage.className = "images__img";
     newImage.src = imageToAdd.link;
-    imagesHtmlContainer.appendChild(newImage);
+
+    var newImageDiv = document.createElement("div");
+    newImageDiv.className = "images__img-grid";
+    imagesHtmlContainer.appendChild(newImageDiv);
+
+    newImageDiv.appendChild(newImage);
 };
 
 var imageCollection = new ImageCollection();
 
-function downloadImage(input) {
+function downloadImage() {
     var newImage = document.querySelector(".form-download__input-url");
 
     if (newImage.value.indexOf("Введите url до картинки") === -1) {

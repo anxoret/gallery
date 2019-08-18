@@ -32,7 +32,6 @@ class ImageWithLink {
 
     constructor(url, collection) {
         this._image = new Image();
-        // this._image.onload = function() {return alert( `${this.height} + ${this.width}`); setTimeout };
         this._image.onload = function() {setTimeout( () => refreshView(), 0 ) };
         this._image.src = url;
     }
@@ -109,7 +108,6 @@ let imagesHtmlContainer = document.querySelector(".images");
 function refreshView() {
 
     let images = document.querySelectorAll(".images__img");
-    let imagesGrids = document.querySelectorAll(".images__img-grid");
 
     let imagesMaxHeight = 200;
     let imagesMaxWidth = 0;
@@ -125,14 +123,6 @@ function refreshView() {
         }
 
     }
-
-    // if (imagesMaxWidth > 300) {
-    //     imagesMaxWidth = 300;
-    // }
-
-    // for (let i = 0; i < imagesGrids.length; i++) {
-    //     imagesGrids[i].style.overflow = "auto";
-    // }
 
 }
 
