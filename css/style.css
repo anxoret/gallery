@@ -1,0 +1,28 @@
+* {
+  margin: 0;
+  padding: 0; }
+
+body {
+  padding: 20px;
+  text-align: center;
+  /*For IE6 Shenanigans*/ }
+
+.container {
+  width: 80%;
+  max-width: 860px;
+  min-width: 320px;
+  margin: 0 auto;
+  text-align: center; }
+
+.form-download p {
+  margin: 10px auto; }
+
+.images__img-grid {
+  display: inline-block;
+  margin: 5px;
+  width: 300px;
+  overflow: auto; }
+
+@media screen and (max-width: 814px) {
+  .images__img-grid {
+    width: 100%; } }

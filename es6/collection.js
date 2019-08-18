@@ -7,6 +7,7 @@ class Collection {
     }
 
     add(elem) {
+
         let storage = this.toArray();
         storage.push(elem);
     }
@@ -20,35 +21,42 @@ class Collection {
 class ImageCollection extends Collection {
 
     add(elem) {
-        if (elem instanceof ImageLink) {
+        if (elem instanceof ImageWithLink) {
             super.add(elem);
         }
     }
 
 };
 
-class ImageLink {
+class ImageWithLink {
 
-    constructor(url) {
-        this._link = url;
+    constructor(url, collection) {
+        this._image = new Image();
+        // this._image.onload = function() {return alert( `${this.height} + ${this.width}`); setTimeout };
+        this._image.onload = function() {setTimeout( () => refreshView(), 0 ) };
+        this._image.src = url;
+    }
+
+    get image() {
+        return this._image;
     }
 
     get link() {
-        return this._link;
+        return this._image.src;
     }
 
     set link(url) {
-        this._link = url;
+        this._image.src = url;
     }
 
 };
 
-function createImageFromLink(url) {
-    return new ImageLink(url);
+function createImageFromLink(url, collection) {
+    return new ImageWithLink(url, collection);
 };
 
 function addImageToCollection(url, collection) {
-    collection.add(createImageFromLink(url));
+    collection.add(createImageFromLink(url, collection));
 };
 
 function addImage(url, collection) {
@@ -98,16 +106,53 @@ function readFile(input) {
 
 let imagesHtmlContainer = document.querySelector(".images");
 
+function refreshView() {
+
+    let images = document.querySelectorAll(".images__img");
+    let imagesGrids = document.querySelectorAll(".images__img-grid");
+
+    let imagesMaxHeight = 200;
+    let imagesMaxWidth = 0;
+
+    for (let i = 0; i < images.length; i++) {
+        
+        if (imagesMaxHeight < images[i].height) {
+            images[i].style.height = "200px";
+        }
+
+        if (imagesMaxWidth < images[i].width) {
+            imagesMaxWidth = images[i].width;
+        }
+
+    }
+
+    // if (imagesMaxWidth > 300) {
+    //     imagesMaxWidth = 300;
+    // }
+
+    // for (let i = 0; i < imagesGrids.length; i++) {
+    //     imagesGrids[i].style.overflow = "auto";
+    // }
+
+}
+
 function updateView(collection) {
     let imageToAdd = collection.toArray()[collection.toArray().length - 1];
     let newImage = document.createElement("img");
+    newImage.className = "images__img"
     newImage.src = imageToAdd.link;
-    imagesHtmlContainer.appendChild(newImage);
+
+    let newImageDiv = document.createElement("div");
+    newImageDiv.className = "images__img-grid";
+    imagesHtmlContainer.appendChild(newImageDiv);
+
+    newImageDiv.appendChild(newImage);
+
 };
 
 let imageCollection = new ImageCollection();
 
-function downloadImage(input) {
+function downloadImage() {
     let newImage = document.querySelector(".form-download__input-url");
 
     if ( (newImage.value.indexOf("Введите url до картинки") === -1) ) {
